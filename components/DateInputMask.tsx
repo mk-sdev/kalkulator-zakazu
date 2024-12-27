@@ -40,10 +40,10 @@ const DateInputMask = () => {
 
   return (
     <View style={{ padding: 20 }}>
-      <Text>Wpisz datę:</Text>
+      <Text>Wpisz datę rozpoczęcia zakazu:</Text>
       <TextInputMask
         type={'datetime'}
-        placeholder="DD/MM/YYYY"
+        placeholder="DD/MM/RRRR"
         options={{
           format: 'DD/MM/YYYY', // Format daty
         }}

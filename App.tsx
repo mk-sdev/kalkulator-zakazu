@@ -7,15 +7,16 @@ import OkresPobytu from './components/OkresPobytu'
 import { useState } from 'react'
 
 export default function App() {
-  const [startDate, setStartDate] = useState('d')
+  const [startDate, setStartDate] = useState('')
+  const [okresZakazu, setOkresZakazu] = useState(0)
   const [dniPobytu, setDniPobytu] = useState(0) //okres pobytu w dniach
 
   return (
     <View style={styles.container}>
       <DateInputMask setDateState={setStartDate}></DateInputMask>
-      <NumberInput />
+      <NumberInput setOkresZakazu={setOkresZakazu} />
       <OkresPobytu setDniPobytu={setDniPobytu}></OkresPobytu>
-      <Output />
+      <Output okresZakazu={okresZakazu} startDate={startDate} dniPobytu={dniPobytu} />
       <StatusBar style="auto" />
     </View>
   )

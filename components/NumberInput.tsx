@@ -1,8 +1,16 @@
-import React, { useState } from 'react';
-import { View, TextInput, StyleSheet, Text } from 'react-native';
+import React, { useEffect, useState } from 'react'
+import { View, TextInput, StyleSheet, Text } from 'react-native'
 
-const NumberInput = () => {
-  const [number, setNumber] = useState('');
+const NumberInput = ({
+  setOkresZakazu,
+}: {
+  setOkresZakazu: (e: number) => void
+}) => {
+  const [number, setNumber] = useState('')
+
+  useEffect(() => {
+    setOkresZakazu(parseInt(number, 10))
+  }, [number])
 
   return (
     <View style={styles.container}>
@@ -11,13 +19,13 @@ const NumberInput = () => {
         style={styles.input}
         keyboardType="numeric" // Klawiatura z cyframi
         value={number}
-        onChangeText={(text) => setNumber(text.replace(/[^0-9]/g, ''))} // Usuwa wszystko, co nie jest cyfrą
+        onChangeText={text => setNumber(text.replace(/[^0-9]/g, ''))} // Usuwa wszystko, co nie jest cyfrą
         placeholder="np. 10"
         maxLength={10} // Ograniczenie długości (opcjonalne)
       />
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -31,6 +39,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     minWidth: 200,
   },
-});
+})
 
-export default NumberInput;
+export default NumberInput

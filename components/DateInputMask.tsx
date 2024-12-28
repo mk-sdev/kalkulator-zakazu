@@ -18,7 +18,7 @@ const DateInputMask = ({
 
   return (
     <View style={{ paddingHorizontal: 20 }}>
-      <Text>{label}:</Text>
+      <Text style={{fontSize: 16, fontWeight: 'bold', opacity: .8}}>{label}:</Text>
       <TextInputMask
         type={'datetime'}
         placeholder="DD/MM/RRRR"
@@ -33,7 +33,7 @@ const DateInputMask = ({
           marginTop: 10,
           borderRadius: 5,
           borderColor: isValid ? 'gray' : 'red', // Kolor ramki w zależności od poprawności daty
-          minWidth: 200,
+          // minWidth: 200,
         }}
       />
     </View>

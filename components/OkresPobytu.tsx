@@ -1,5 +1,14 @@
 import Feather from '@expo/vector-icons/Feather'
-import { View, Text, StyleSheet, Button, ScrollView } from 'react-native'
+import {
+  View,
+  Text,
+  StyleSheet,
+  Button,
+  ScrollView,
+  TouchableOpacity,
+  Pressable,
+  Alert,
+} from 'react-native'
 import React, { useEffect, useState } from 'react'
 import DateInputMask from './DateInputMask'
 
@@ -18,10 +27,9 @@ export default function OkresPobytu({
   const [endDate, setEndDate] = useState('')
   const [okresyPobytu, setOkresyPobytu] = useState<okresType[]>([])
 
-  // Oblicza różnicę między startDate a endDate
   function countDays(): void {
     if (!startDate || !endDate) {
-      alert('Proszę uzupełnić obie daty.')
+      Alert.alert('Błąd', 'Proszę uzupełnić obie daty.')
       return
     }
 
@@ -29,31 +37,30 @@ export default function OkresPobytu({
       const [startDay, startMonth, startYear] = startDate.split('/').map(Number)
       const [endDay, endMonth, endYear] = endDate.split('/').map(Number)
 
-      const start = new Date(startYear, startMonth - 1, startDay) // Miesiące w obiekcie Date są 0-indeksowane
+      const start = new Date(startYear, startMonth - 1, startDay)
       const end = new Date(endYear, endMonth - 1, endDay)
 
       if (isNaN(start.getTime()) || isNaN(end.getTime())) {
-        alert('Proszę podać poprawne daty.')
+        Alert.alert('Błąd', 'Proszę podać poprawne daty.')
         return
       }
 
       if (start > end) {
-        alert('Data końcowa nie może być wcześniejsza niż początkowa.')
+        Alert.alert(
+          'Błąd',
+          'Data końcowa nie może być wcześniejsza niż początkowa.'
+        )
         return
       }
 
       const diffTime = end.getTime() - start.getTime()
-      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) // Konwersja milisekund na dni
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
 
-      setDniPobytu((prev: number) => prev + diffDays) // Ustawienie liczby dni w stanie nadrzędnym
+      setDniPobytu((prev: number) => prev + diffDays)
       setOkresyPobytu([
         ...okresyPobytu,
         { start: startDate, end: endDate, duration: diffDays },
       ])
-
-      // Resetowanie inputów
-      //setStartDate('')
-      //setEndDate('')
     } catch (error) {
       alert('Wystąpił błąd podczas obliczania różnicy dat.')
       console.error(error)
@@ -68,38 +75,61 @@ export default function OkresPobytu({
   useEffect(() => {
     let lacznyOkres: number = 0
     okresyPobytu.forEach(okres => (lacznyOkres += okres.duration))
-    setDniPobytu(lacznyOkres) // Aktualizacja liczby dni w stanie nadrzędnym
+    setDniPobytu(lacznyOkres)
   }, [okresyPobytu])
 
   return (
     <View style={styles.container}>
-      <View style={{ justifyContent: 'space-between', height: 200 }}>
-        <DateInputMask
-          setDateState={setStartDate}
-          label="rozpoczęcie pobytu w zakładzie"
-        />
-        <DateInputMask
-          setDateState={setEndDate}
-          label="zakończenie pobytu w zakładzie"
-        />
-        <Button title="Dodaj okres pobytu" onPress={() => countDays()} />
+      <View style={{ gap: 20 }}>
+        <Text style={{ textAlign: 'center', fontSize: 19,  }}>
+          Okres pobytu w zakładzie:
+        </Text>
+        <View style={{ flexDirection: 'row' }}>
+          <DateInputMask setDateState={setStartDate} label="początek" />
+          <DateInputMask setDateState={setEndDate} label="koniec" />
+        </View>
+
+        <Pressable
+          style={({ pressed }) => [
+            styles.button,
+            pressed ? styles.buttonPressed : null,
+          ]}
+          onPress={() => countDays()}
+        >
+          <Text style={styles.buttonText}>Dodaj okres pobytu</Text>
+        </Pressable>
       </View>
 
-      {/* Wyświetlanie okresów pobytu z lepszą stylizacją */}
-      <ScrollView contentContainerStyle={styles.okresyContainer}>
+      <View style={styles.okresyContainer}>
         {okresyPobytu.map((okres, index) => {
           return (
             <View key={index} style={styles.okresCard}>
-              <Text
-                style={styles.okresText}
-              >{`Okres: ${okres.start} - ${okres.end}`}</Text>
-              <Text
-                style={styles.okresDuration}
-              >{`Liczba dni: ${okres.duration}`}</Text>
+              <View
+                style={{
+                  justifyContent: 'center',
+                  width: '85%',
+                  // backgroundColor: 'red',
+                  padding: 20,
+                }}
+              >
+                <Text
+                  style={styles.okresText}
+                >{`${okres.start} - ${okres.end}`}</Text>
+                <Text
+                  style={styles.okresDuration}
+                >{`Liczba dni: ${okres.duration}`}</Text>
+              </View>
               <Feather
                 name="trash-2"
                 size={24}
-                color="black"
+                color="red"
+                style={{
+                  alignSelf: 'center',
+                  backgroundColor: 'rgba(255, 0, 0, .1)',
+                  borderRadius: 50,
+                  padding: 7,
+                  right: 10
+                }}
                 onPress={() => {
                   usunOkresPobytu(index, okres.duration)
                 }}
@@ -107,42 +137,57 @@ export default function OkresPobytu({
             </View>
           )
         })}
-      </ScrollView>
+      </View>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#f0f0f0', // Tło kontenera
+    backgroundColor: '#f0f0f0',
     padding: 20,
     flex: 1,
+    width: '85%',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 15,
   },
   okresyContainer: {
-    marginTop: 20, // Odstęp między przyciskiem a listą okresów
+    // marginTop: 20,
     width: '100%',
   },
   okresCard: {
-    backgroundColor: '#ffffff', // Białe tło dla każdego okresu
-    padding: 15,
-    marginVertical: 10, // Odstęp między okresami
-    borderRadius: 8, // Zaokrąglone rogi
-    shadowColor: '#000', // Cień dla lepszego efektu
-    shadowOffset: { width: 0, height: 2 },
+    backgroundColor: '#ffffff',
+    borderRadius: 8,
     shadowOpacity: 0.1,
     shadowRadius: 4,
-    elevation: 3, // Cień w Androidzie
+    flexDirection: 'row',
+    marginTop: 20,
   },
   okresText: {
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: 'bold',
-    marginBottom: 5, // Odstęp między start i end a dniami
+    marginBottom: 5,
   },
   okresDuration: {
-    fontSize: 14,
-    color: '#555', // Szary kolor dla liczby dni
+    fontSize: 17,
+    color: '#555',
+  },
+  button: {
+    backgroundColor: '#007BFF',
+    padding: 12,
+    borderRadius: 20,
+    alignItems: 'center',
+    width: '100%',
+    alignSelf: 'center',
+    elevation: 1
+  },
+  buttonPressed: {
+    backgroundColor: '#0056b3',
+  },
+  buttonText: {
+    color: '#f0f0fa',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 })

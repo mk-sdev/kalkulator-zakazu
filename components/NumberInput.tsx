@@ -14,7 +14,9 @@ const NumberInput = ({
 
   return (
     <View style={styles.container}>
-      <Text>okres zakazu w latach:</Text>
+      <Text style={{ fontSize: 16, fontWeight: 'bold', opacity: 0.8 }}>
+        okres zakazu w latach:
+      </Text>
       <TextInput
         style={styles.input}
         keyboardType="numeric" // Klawiatura z cyframi

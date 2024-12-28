@@ -27,14 +27,26 @@ export default function Output({
     const newMonth = String(start.getMonth() + 1).padStart(2, '0')
     const newYear = start.getFullYear()
 
-    if(newDay==='NaN' || newMonth==='NaN' || Number.isNaN(newYear)) 
-      return ""
+    if (newDay === 'NaN' || newMonth === 'NaN' || Number.isNaN(newYear))
+      return ''
     return `${newDay}/${newMonth}/${newYear}`
   }
 
   return (
     <View>
-      <Text>Przewidywana data końca zakazu: {returnDate()}</Text>
+      <Text style={{ fontSize: 17, opacity: 0.7 }}>
+        Przewidywana data końca zakazu:
+      </Text>
+      <Text
+        style={{
+          fontSize: 25,
+          fontWeight: 'bold',
+          textAlign: 'center',
+          marginTop: 10,
+        }}
+      >
+        {returnDate()}
+      </Text>
     </View>
   )
 }

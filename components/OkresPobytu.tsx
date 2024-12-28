@@ -6,7 +6,7 @@ import {
   Pressable,
   StyleSheet,
   Text,
-  View
+  View,
 } from 'react-native'
 import { backgroundColor, primary, textColor } from '../utils/styles'
 import DateInputMask from './DateInputMask'
@@ -25,6 +25,7 @@ export default function OkresPobytu({
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
   const [okresyPobytu, setOkresyPobytu] = useState<okresType[]>([])
+  const [resetInputsTrigger, setResetInputsTrigger] = useState(false)
 
   function countDays(): void {
     Keyboard.dismiss()
@@ -61,6 +62,9 @@ export default function OkresPobytu({
         ...okresyPobytu,
         { start: startDate, end: endDate, duration: diffDays },
       ])
+
+      // Resetowanie inputów
+      setResetInputsTrigger(prev => !prev)
     } catch (error) {
       alert('Wystąpił błąd podczas obliczania różnicy dat.')
       console.error(error)
@@ -69,7 +73,7 @@ export default function OkresPobytu({
 
   function usunOkresPobytu(index: number, duration: number): void {
     setOkresyPobytu(prev => prev.filter((_, i) => i !== index))
-    setDniPobytu((prev: number) => prev + duration)
+    setDniPobytu((prev: number) => prev - duration)
   }
 
   useEffect(() => {
@@ -81,10 +85,18 @@ export default function OkresPobytu({
   return (
     <View style={styles.container}>
       <View style={styles.inputContainer}>
-        <Text style={styles.headerText}>Okres pobytu w zakładzie:</Text>
+        <Text style={styles.headerText}>Okresy pobytów w zakładzie</Text>
         <View style={styles.dateInputRow}>
-          <DateInputMask setDateState={setStartDate} label="początek" />
-          <DateInputMask setDateState={setEndDate} label="koniec" />
+          <DateInputMask
+            setDateState={setStartDate}
+            label="początek"
+            resetTrigger={resetInputsTrigger}
+          />
+          <DateInputMask
+            setDateState={setEndDate}
+            label="koniec"
+            resetTrigger={resetInputsTrigger}
+          />
         </View>
         <Pressable
           style={({ pressed }) => [
@@ -96,6 +108,8 @@ export default function OkresPobytu({
           <Text style={styles.buttonText}>Dodaj okres pobytu</Text>
         </Pressable>
       </View>
+
+      {okresyPobytu.length > 0 && <View style={styles.divider}></View>}
 
       <View style={styles.okresyContainer}>
         {okresyPobytu.map((okres, index) => {
@@ -152,7 +166,7 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: primary,
     padding: 12,
-    borderRadius: 16,
+    borderRadius: 20,
     alignItems: 'center',
     width: '100%',
     alignSelf: 'center',
@@ -165,6 +179,13 @@ const styles = StyleSheet.create({
     color: backgroundColor,
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  divider: {
+    width: '100%',
+    height: 1,
+    backgroundColor: textColor,
+    marginTop: 20,
+    opacity: 0.1,
   },
   okresyContainer: {
     width: '100%',
@@ -191,7 +212,7 @@ const styles = StyleSheet.create({
   okresDuration: {
     fontSize: 17,
     color: textColor,
-    opacity: .7
+    opacity: 0.7,
   },
   trashIcon: {
     alignSelf: 'center',

@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "kalkulator_zakazu",
-    "slug": "kalkulator_zakazu",
+    "name": "kalkulator zakazu",
+    "slug": "kalkulator-zakazu",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -19,10 +19,24 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.mkaleta.kalkulatorzakazu",
+      "versionCode": 2
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "0903bee6-51a7-4812-995a-a424ce11234f"
+      }
+    },
+    "owner": "mkaleta",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/0903bee6-51a7-4812-995a-a424ce11234f"
     }
   }
 }

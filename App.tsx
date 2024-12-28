@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ScrollView, StyleSheet, View } from 'react-native'
+import { ScrollView, StatusBar, StyleSheet, View } from 'react-native'
 import DateInputMask from './components/DateInputMask'
 import NumberInput from './components/NumberInput'
 import OkresPobytu from './components/OkresPobytu'
@@ -33,7 +33,7 @@ export default function App() {
           startDate={startDate}
           dniPobytu={dniPobytu}
         />
-        {/* <StatusBar style="auto" /> */}
+        <StatusBar/>
       </ScrollView>
     </View>
   )

@@ -8,7 +8,7 @@ export default function OkresPobytu({
 }: {
   setDniPobytu: (e: number) => void
 }) {
-  type okresType={
+  type okresType = {
     start: string
     end: string
     duration: number
@@ -60,16 +60,16 @@ export default function OkresPobytu({
     }
   }
 
-  function usunOkresPobytu(index: number, duration:number): void {
-    setOkresyPobytu(prev => prev.filter((_, i) => i !== index)) 
+  function usunOkresPobytu(index: number, duration: number): void {
+    setOkresyPobytu(prev => prev.filter((_, i) => i !== index))
     setDniPobytu((prev: number) => prev + duration)
   }
 
   useEffect(() => {
-    let lacznyOkres:number = 0
-    okresyPobytu.forEach(okres => lacznyOkres+=okres.duration)
-    setDniPobytu(lacznyOkres)  // Aktualizacja liczby dni w stanie nadrzędnym
-  }, [okresyPobytu]);
+    let lacznyOkres: number = 0
+    okresyPobytu.forEach(okres => (lacznyOkres += okres.duration))
+    setDniPobytu(lacznyOkres) // Aktualizacja liczby dni w stanie nadrzędnym
+  }, [okresyPobytu])
 
   return (
     <View style={styles.container}>

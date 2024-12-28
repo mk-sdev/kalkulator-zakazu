@@ -12,9 +12,18 @@ export default function App() {
   const [dniPobytu, setDniPobytu] = useState(0) //okres pobytu w dniach
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <View style={{justifyContent: 'space-between', height: 170, backgroundColor: 'transparent'}}>
-        <DateInputMask setDateState={setStartDate} label="rozpoczęcia zakazu" />
+    <ScrollView
+      contentContainerStyle={styles.container}
+      keyboardShouldPersistTaps="handled"
+    >
+      <View
+        style={{
+          justifyContent: 'space-between',
+          height: 170,
+          backgroundColor: 'transparent',
+        }}
+      >
+        <DateInputMask setDateState={setStartDate} label="rozpoczęcie zakazu" />
         <NumberInput setOkresZakazu={setOkresZakazu} />
       </View>
       <OkresPobytu setDniPobytu={setDniPobytu}></OkresPobytu>
@@ -23,7 +32,7 @@ export default function App() {
         startDate={startDate}
         dniPobytu={dniPobytu}
       />
-      <StatusBar style="auto" />
+      {/* <StatusBar style="auto" /> */}
     </ScrollView>
   )
 }

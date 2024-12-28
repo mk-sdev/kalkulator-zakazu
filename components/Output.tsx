@@ -27,6 +27,8 @@ export default function Output({
     const newMonth = String(start.getMonth() + 1).padStart(2, '0')
     const newYear = start.getFullYear()
 
+    if(newDay==='NaN' || newMonth==='NaN' || Number.isNaN(newYear)) 
+      return ""
     return `${newDay}/${newMonth}/${newYear}`
   }
 

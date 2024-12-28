@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { View, Text, Alert } from 'react-native'
 import { TextInputMask } from 'react-native-masked-text'
 import useDate from '../hooks/useDate'
+import { inputLabelStyle } from '../utils/styles'
 
 const DateInputMask = ({
   setDateState,
@@ -18,12 +19,12 @@ const DateInputMask = ({
 
   return (
     <View style={{ paddingHorizontal: 20 }}>
-      <Text style={{fontSize: 16, fontWeight: 'bold', opacity: .8}}>{label}:</Text>
+      <Text style={inputLabelStyle}>{label}:</Text>
       <TextInputMask
         type={'datetime'}
         placeholder="DD/MM/RRRR"
         options={{
-          format: 'DD/MM/YYYY', // Format daty
+          format: 'DD/MM/YYYY',
         }}
         value={date}
         onChangeText={handleDateChange}
@@ -33,7 +34,6 @@ const DateInputMask = ({
           marginTop: 10,
           borderRadius: 5,
           borderColor: isValid ? 'gray' : 'red', // Kolor ramki w zależności od poprawności daty
-          // minWidth: 200,
         }}
       />
     </View>

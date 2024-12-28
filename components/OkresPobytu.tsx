@@ -3,9 +3,7 @@ import {
   View,
   Text,
   StyleSheet,
-  Button,
   ScrollView,
-  TouchableOpacity,
   Pressable,
   Alert,
 } from 'react-native'
@@ -80,15 +78,12 @@ export default function OkresPobytu({
 
   return (
     <View style={styles.container}>
-      <View style={{ gap: 20 }}>
-        <Text style={{ textAlign: 'center', fontSize: 19,  }}>
-          Okres pobytu w zakładzie:
-        </Text>
-        <View style={{ flexDirection: 'row' }}>
+      <View style={styles.inputContainer}>
+        <Text style={styles.headerText}>Okres pobytu w zakładzie:</Text>
+        <View style={styles.dateInputRow}>
           <DateInputMask setDateState={setStartDate} label="początek" />
           <DateInputMask setDateState={setEndDate} label="koniec" />
         </View>
-
         <Pressable
           style={({ pressed }) => [
             styles.button,
@@ -104,14 +99,7 @@ export default function OkresPobytu({
         {okresyPobytu.map((okres, index) => {
           return (
             <View key={index} style={styles.okresCard}>
-              <View
-                style={{
-                  justifyContent: 'center',
-                  width: '85%',
-                  // backgroundColor: 'red',
-                  padding: 20,
-                }}
-              >
+              <View style={styles.okresContent}>
                 <Text
                   style={styles.okresText}
                 >{`${okres.start} - ${okres.end}`}</Text>
@@ -123,13 +111,7 @@ export default function OkresPobytu({
                 name="trash-2"
                 size={24}
                 color="red"
-                style={{
-                  alignSelf: 'center',
-                  backgroundColor: 'rgba(255, 0, 0, .1)',
-                  borderRadius: 50,
-                  padding: 7,
-                  right: 10
-                }}
+                style={styles.trashIcon}
                 onPress={() => {
                   usunOkresPobytu(index, okres.duration)
                 }}
@@ -152,8 +134,34 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 15,
   },
+  inputContainer: {
+    gap: 20,
+  },
+  headerText: {
+    textAlign: 'center',
+    fontSize: 19,
+  },
+  dateInputRow: {
+    flexDirection: 'row',
+  },
+  button: {
+    backgroundColor: '#007BFF',
+    padding: 12,
+    borderRadius: 20,
+    alignItems: 'center',
+    width: '100%',
+    alignSelf: 'center',
+    elevation: 1,
+  },
+  buttonPressed: {
+    backgroundColor: '#0056b3',
+  },
+  buttonText: {
+    color: '#f0f0fa',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
   okresyContainer: {
-    // marginTop: 20,
     width: '100%',
   },
   okresCard: {
@@ -164,6 +172,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: 20,
   },
+  okresContent: {
+    justifyContent: 'center',
+    width: '85%',
+    padding: 20,
+  },
   okresText: {
     fontSize: 15,
     fontWeight: 'bold',
@@ -173,21 +186,11 @@ const styles = StyleSheet.create({
     fontSize: 17,
     color: '#555',
   },
-  button: {
-    backgroundColor: '#007BFF',
-    padding: 12,
-    borderRadius: 20,
-    alignItems: 'center',
-    width: '100%',
+  trashIcon: {
     alignSelf: 'center',
-    elevation: 1
-  },
-  buttonPressed: {
-    backgroundColor: '#0056b3',
-  },
-  buttonText: {
-    color: '#f0f0fa',
-    fontSize: 16,
-    fontWeight: 'bold',
+    backgroundColor: 'rgba(255, 0, 0, .1)',
+    borderRadius: 50,
+    padding: 7,
+    right: 10,
   },
 })

@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Button } from 'react-native'
+import { View, Text, StyleSheet, Button, ScrollView } from 'react-native'
 import React, { useState } from 'react'
 import DateInputMask from './DateInputMask'
 
@@ -44,9 +44,9 @@ export default function OkresPobytu({
         { start: startDate, end: endDate, duration: diffDays },
       ])
 
-      // FIXME: Resetowanie inputów nie działa
-      setStartDate('')
-      setEndDate('')
+      // Resetowanie inputów
+      //setStartDate('')
+      //setEndDate('')
     } catch (error) {
       alert('Wystąpił błąd podczas obliczania różnicy dat.')
       console.error(error)
@@ -54,19 +54,69 @@ export default function OkresPobytu({
   }
 
   return (
-    <View style={{ backgroundColor: 'pink' }}>
-      <DateInputMask setDateState={setStartDate} />
-      <DateInputMask setDateState={setEndDate} />
-      <Button title="Dodaj" onPress={() => countDays()} />
-      {okresyPobytu.map((okres, index) => {
-        return (
-          <Text
-            key={index}
-          >{`Okres: ${okres.start} - ${okres.end}, liczba dni: ${okres.duration}`}</Text>
-        )
-      })}
+    <View style={styles.container}>
+      <View style={{ justifyContent: 'space-between' , height: 200}}>
+        <DateInputMask
+          setDateState={setStartDate}
+          label="rozpoczęcie pobytu w zakładzie"
+        />
+        <DateInputMask
+          setDateState={setEndDate}
+          label="zakończenie pobytu w zakładzie"
+        />
+        <Button title="Dodaj okres pobytu" onPress={() => countDays()} />
+      </View>
+
+      {/* Wyświetlanie okresów pobytu z lepszą stylizacją */}
+      <ScrollView contentContainerStyle={styles.okresyContainer}>
+        {okresyPobytu.map((okres, index) => {
+          return (
+            <View key={index} style={styles.okresCard}>
+              <Text
+                style={styles.okresText}
+              >{`Okres: ${okres.start} - ${okres.end}`}</Text>
+              <Text
+                style={styles.okresDuration}
+              >{`Liczba dni: ${okres.duration}`}</Text>
+            </View>
+          )
+        })}
+      </ScrollView>
     </View>
   )
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#f0f0f0', // Tło kontenera
+    padding: 20,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 15
+  },
+  okresyContainer: {
+    marginTop: 20, // Odstęp między przyciskiem a listą okresów
+    width: '100%',
+  },
+  okresCard: {
+    backgroundColor: '#ffffff', // Białe tło dla każdego okresu
+    padding: 15,
+    marginVertical: 10, // Odstęp między okresami
+    borderRadius: 8, // Zaokrąglone rogi
+    shadowColor: '#000', // Cień dla lepszego efektu
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3, // Cień w Androidzie
+  },
+  okresText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 5, // Odstęp między start i end a dniami
+  },
+  okresDuration: {
+    fontSize: 14,
+    color: '#555', // Szary kolor dla liczby dni
+  },
+})

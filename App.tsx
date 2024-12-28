@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar'
-import { StyleSheet, Text, View } from 'react-native'
+import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import DateInputMask from './components/DateInputMask'
 import NumberInput from './components/NumberInput'
 import Output from './components/Output'
@@ -12,21 +12,29 @@ export default function App() {
   const [dniPobytu, setDniPobytu] = useState(0) //okres pobytu w dniach
 
   return (
-    <View style={styles.container}>
-      <DateInputMask setDateState={setStartDate}></DateInputMask>
-      <NumberInput setOkresZakazu={setOkresZakazu} />
+    <ScrollView contentContainerStyle={styles.container}>
+      <View style={{justifyContent: 'space-between', height: 170, backgroundColor: 'transparent'}}>
+        <DateInputMask setDateState={setStartDate} label="rozpoczęcia zakazu" />
+        <NumberInput setOkresZakazu={setOkresZakazu} />
+      </View>
       <OkresPobytu setDniPobytu={setDniPobytu}></OkresPobytu>
-      <Output okresZakazu={okresZakazu} startDate={startDate} dniPobytu={dniPobytu} />
+      <Output
+        okresZakazu={okresZakazu}
+        startDate={startDate}
+        dniPobytu={dniPobytu}
+      />
       <StatusBar style="auto" />
-    </View>
+    </ScrollView>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    // flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+    paddingVertical: 70,
+    gap: 20
   },
 })

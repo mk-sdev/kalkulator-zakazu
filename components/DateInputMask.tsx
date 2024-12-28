@@ -5,8 +5,10 @@ import useDate from '../hooks/useDate'
 
 const DateInputMask = ({
   setDateState,
+  label
 }: {
-  setDateState: (e: unknown) => void
+  setDateState: (e: unknown) => void,
+  label: string
 }) => {
   const [date, isValid, handleDateChange] = useDate()
 
@@ -15,8 +17,8 @@ const DateInputMask = ({
   }, [date])
 
   return (
-    <View style={{ padding: 20 }}>
-      <Text>Wpisz datę rozpoczęcia zakazu:</Text>
+    <View style={{ paddingHorizontal: 20 }}>
+      <Text>{label}:</Text>
       <TextInputMask
         type={'datetime'}
         placeholder="DD/MM/RRRR"

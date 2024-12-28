@@ -1,5 +1,6 @@
+import Feather from '@expo/vector-icons/Feather'
 import { View, Text, StyleSheet, Button, ScrollView } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import DateInputMask from './DateInputMask'
 
 export default function OkresPobytu({
@@ -7,9 +8,15 @@ export default function OkresPobytu({
 }: {
   setDniPobytu: (e: number) => void
 }) {
+  type okresType={
+    start: string
+    end: string
+    duration: number
+  }
+
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
-  const [okresyPobytu, setOkresyPobytu] = useState([])
+  const [okresyPobytu, setOkresyPobytu] = useState<okresType[]>([])
 
   // Oblicza różnicę między startDate a endDate
   function countDays(): void {
@@ -53,9 +60,20 @@ export default function OkresPobytu({
     }
   }
 
+  function usunOkresPobytu(index: number, duration:number): void {
+    setOkresyPobytu(prev => prev.filter((_, i) => i !== index)) 
+    setDniPobytu((prev: number) => prev + duration)
+  }
+
+  useEffect(() => {
+    let lacznyOkres:number = 0
+    okresyPobytu.forEach(okres => lacznyOkres+=okres.duration)
+    setDniPobytu(lacznyOkres)  // Aktualizacja liczby dni w stanie nadrzędnym
+  }, [okresyPobytu]);
+
   return (
     <View style={styles.container}>
-      <View style={{ justifyContent: 'space-between' , height: 200}}>
+      <View style={{ justifyContent: 'space-between', height: 200 }}>
         <DateInputMask
           setDateState={setStartDate}
           label="rozpoczęcie pobytu w zakładzie"
@@ -78,6 +96,14 @@ export default function OkresPobytu({
               <Text
                 style={styles.okresDuration}
               >{`Liczba dni: ${okres.duration}`}</Text>
+              <Feather
+                name="trash-2"
+                size={24}
+                color="black"
+                onPress={() => {
+                  usunOkresPobytu(index, okres.duration)
+                }}
+              />
             </View>
           )
         })}
@@ -93,7 +119,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 15
+    borderRadius: 15,
   },
   okresyContainer: {
     marginTop: 20, // Odstęp między przyciskiem a listą okresów

@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { View, TextInput, StyleSheet, Text } from 'react-native'
-import { inputLabelStyle } from '../utils/styles'
+import {
+  inputColor,
+  inputLabelStyle,
+  inputRadius,
+  primary,
+  textColor,
+} from '../utils/styles'
 
 const NumberInput = ({
   setOkresZakazu,
@@ -8,6 +14,7 @@ const NumberInput = ({
   setOkresZakazu: (e: number) => void
 }) => {
   const [number, setNumber] = useState('')
+  const [isFocused, setIsFocused] = useState(false)
 
   useEffect(() => {
     setOkresZakazu(parseInt(number, 10))
@@ -15,16 +22,20 @@ const NumberInput = ({
 
   return (
     <View style={styles.container}>
-      <Text style={inputLabelStyle}>
-        okres zakazu w latach:
-      </Text>
+      <Text style={inputLabelStyle}>okres zakazu w latach:</Text>
       <TextInput
-        style={styles.input}
-        keyboardType="numeric" 
+        style={[
+          { borderColor: isFocused ? primary : inputColor },
+          styles.input,
+        ]}
+        keyboardType="numeric"
         value={number}
         onChangeText={text => setNumber(text.replace(/[^0-9]/g, ''))} // Usuwa wszystko, co nie jest cyfrą
         placeholder="np. 10"
-        maxLength={10} 
+        maxLength={10}
+        placeholderTextColor={inputColor}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
       />
     </View>
   )
@@ -36,11 +47,11 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-    borderColor: 'gray',
     padding: 10,
     marginTop: 10,
-    borderRadius: 5,
+    borderRadius: inputRadius,
     minWidth: 200,
+    color: textColor
   },
 })
 

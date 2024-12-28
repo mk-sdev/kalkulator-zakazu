@@ -1,5 +1,6 @@
 import { View, Text } from 'react-native'
 import React from 'react'
+import { primary, textColor } from '../utils/styles'
 
 export default function Output({
   okresZakazu,
@@ -34,7 +35,7 @@ export default function Output({
 
   return (
     <View>
-      <Text style={{ fontSize: 17, opacity: 0.7 }}>
+      <Text style={{ fontSize: 17, opacity: 0.7, color: textColor }}>
         Przewidywana data końca zakazu:
       </Text>
       <Text
@@ -43,6 +44,7 @@ export default function Output({
           fontWeight: 'bold',
           textAlign: 'center',
           marginTop: 10,
+          color: primary
         }}
       >
         {returnDate()}

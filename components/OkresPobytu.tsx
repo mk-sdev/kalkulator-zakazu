@@ -1,13 +1,14 @@
 import Feather from '@expo/vector-icons/Feather'
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  Pressable,
-  Alert,
-} from 'react-native'
 import React, { useEffect, useState } from 'react'
+import {
+  Alert,
+  Keyboard,
+  Pressable,
+  StyleSheet,
+  Text,
+  View
+} from 'react-native'
+import { backgroundColor, primary, textColor } from '../utils/styles'
 import DateInputMask from './DateInputMask'
 
 export default function OkresPobytu({
@@ -26,6 +27,7 @@ export default function OkresPobytu({
   const [okresyPobytu, setOkresyPobytu] = useState<okresType[]>([])
 
   function countDays(): void {
+    Keyboard.dismiss()
     if (!startDate || !endDate) {
       Alert.alert('Błąd', 'Proszę uzupełnić obie daty.')
       return
@@ -126,7 +128,7 @@ export default function OkresPobytu({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#f0f0f0',
+    backgroundColor: '#e0ebf8',
     padding: 20,
     flex: 1,
     width: '85%',
@@ -139,15 +141,18 @@ const styles = StyleSheet.create({
   },
   headerText: {
     textAlign: 'center',
-    fontSize: 19,
+    fontSize: 20,
+    fontWeight: 'bold',
+    opacity: 0.4,
+    color: textColor,
   },
   dateInputRow: {
     flexDirection: 'row',
   },
   button: {
-    backgroundColor: '#007BFF',
+    backgroundColor: primary,
     padding: 12,
-    borderRadius: 20,
+    borderRadius: 16,
     alignItems: 'center',
     width: '100%',
     alignSelf: 'center',
@@ -157,7 +162,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#0056b3',
   },
   buttonText: {
-    color: '#f0f0fa',
+    color: backgroundColor,
     fontSize: 16,
     fontWeight: 'bold',
   },
@@ -165,7 +170,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   okresCard: {
-    backgroundColor: '#ffffff',
+    backgroundColor: backgroundColor,
     borderRadius: 8,
     shadowOpacity: 0.1,
     shadowRadius: 4,
@@ -181,10 +186,12 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: 'bold',
     marginBottom: 5,
+    color: textColor,
   },
   okresDuration: {
     fontSize: 17,
-    color: '#555',
+    color: textColor,
+    opacity: .7
   },
   trashIcon: {
     alignSelf: 'center',

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, Alert } from 'react-native'
+import { Text, View } from 'react-native'
 import { TextInputMask } from 'react-native-masked-text'
 import useDate from '../hooks/useDate'
-import { inputLabelStyle } from '../utils/styles'
+import { backgroundColor, inputColor, inputLabelStyle, inputRadius, primary, textColor } from '../utils/styles'
 
 const DateInputMask = ({
   setDateState,
@@ -12,10 +12,17 @@ const DateInputMask = ({
   label: string
 }) => {
   const [date, isValid, handleDateChange] = useDate()
+  const [isFocused, setIsFocused] = useState(false)
 
   useEffect(() => {
     setDateState(date)
   }, [date])
+
+  function returnBorderColor(){
+    if(!isValid) return 'red'
+    if(isFocused) return primary
+    return inputColor
+  }
 
   return (
     <View style={{ paddingHorizontal: 20 }}>
@@ -28,12 +35,17 @@ const DateInputMask = ({
         }}
         value={date}
         onChangeText={handleDateChange}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
+        placeholderTextColor={inputColor}
         style={{
           borderWidth: 1,
           padding: 10,
           marginTop: 10,
-          borderRadius: 5,
-          borderColor: isValid ? 'gray' : 'red', // Kolor ramki w zależności od poprawności daty
+          borderRadius: inputRadius,
+          borderColor: returnBorderColor(), // Kolor ramki w zależności od poprawności daty
+          backgroundColor: backgroundColor,
+          color: textColor
         }}
       />
     </View>

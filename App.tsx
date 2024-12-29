@@ -1,5 +1,10 @@
 import { useState, useEffect } from 'react'
-import { ScrollView, StatusBar, StyleSheet, View, Alert } from 'react-native'
+import {
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  View,
+} from 'react-native'
 import DateInputMask from './components/DateInput'
 import NumberInput from './components/NumberInput'
 import OkresPobytu from './components/OkresPobytu'
@@ -61,7 +66,7 @@ export default function App() {
           startDate={startDate}
           dniPobytu={dniPobytu}
         />
-        <StatusBar />
+        <StatusBar backgroundColor={backgroundColor} barStyle="dark-content" />
       </ScrollView>
     </View>
   )

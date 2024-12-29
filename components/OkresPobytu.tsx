@@ -93,7 +93,7 @@ export default function OkresPobytu({
   return (
     <View style={styles.container}>
       <View style={styles.inputContainer}>
-        <Text style={styles.headerText}>Wprowadź okresy pobytów</Text>
+        <Text style={styles.headerText}>Wprowadź okres pobytu</Text>
         <View style={styles.dateInputRow}>
           <DateInputMask
             setDateState={setStartDate}
@@ -122,7 +122,7 @@ export default function OkresPobytu({
         <React.Fragment>
           <View style={styles.divider}></View>
           <Text style={[styles.headerText, { marginTop: 20 }]}>
-            Okresy pobytów
+            Okresy pobytów:
           </Text>
         </React.Fragment>
       )}

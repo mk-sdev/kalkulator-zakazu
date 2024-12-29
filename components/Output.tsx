@@ -1,11 +1,12 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 import { primary, textColor } from '../utils/styles'
+import { isValidDate } from '../utils/validateDate'
 
 export default function Output({
   okresZakazu,
   dniPobytu,
-  startDate,
+  startDate, //data rozpoczęcia zakazu
 }: {
   okresZakazu: number
   dniPobytu: number
@@ -30,24 +31,29 @@ export default function Output({
 
     if (newDay === 'NaN' || newMonth === 'NaN' || Number.isNaN(newYear))
       return ''
+    if (!isValidDate(startDate)) return ''
     return `${newDay}/${newMonth}/${newYear}`
   }
 
+  let calculatedDate = calculateDate()
+
   return (
     <View>
-      <Text style={{ fontSize: 17, opacity: 0.7, color: textColor }}>
-        Przewidywana data końca zakazu:
-      </Text>
+      {calculatedDate && (
+        <Text style={{ fontSize: 17, opacity: 0.7, color: textColor }}>
+          Przewidywana data końca zakazu:
+        </Text>
+      )}
       <Text
         style={{
           fontSize: 25,
           fontWeight: 'bold',
           textAlign: 'center',
           marginTop: 10,
-          color: primary
+          color: primary,
         }}
       >
-        {calculateDate()}
+        {calculatedDate}
       </Text>
     </View>
   )

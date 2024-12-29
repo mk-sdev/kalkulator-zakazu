@@ -1,28 +1,27 @@
 import React, { useState } from 'react'
 import { Alert } from 'react-native'
-import { validateDate } from '../utils/validateDate'
+import { isValidDate } from '../utils/validateDate'
 
-export default function useDate() {
-    const [date, setDate] = useState('')
-    const [isValid, setIsValid] = useState(true)
+export default function useDate(): [string, boolean, (text: string) => void] {
+  const [date, setDate] = useState('')
+  const [isValid, setIsValid] = useState(true)
 
+  const handleDateChange = (text: string): void => {
+    setDate(text)
 
-    const handleDateChange = (text: string) => {
-      setDate(text)
+    // Walidacja daty
+    if (text.length === 10) {
+      // Walidujemy dopiero, gdy długość daty jest odpowiednia
+      const isValid: boolean = isValidDate(text)
+      setIsValid(isValid)
 
-      // Walidacja daty
-      if (text.length === 10) {
-        // Walidujemy dopiero, gdy długość daty jest odpowiednia
-        const isValidDate = validateDate(text)
-        setIsValid(isValidDate)
-
-        if (!isValidDate) {
-          Alert.alert('Nieprawidłowa data', 'Proszę wpisać istniejącą datę.')
-        }
-      } else {
-        setIsValid(true) // Domyślnie uznajemy datę za poprawną, jeśli długość nie pasuje
+      if (!isValid) {
+        Alert.alert('Nieprawidłowa data', 'Proszę wpisać istniejącą datę.')
       }
+    } else {
+      setIsValid(true) // Domyślnie uznajemy datę za poprawną, jeśli długość nie pasuje
     }
+  }
 
-    return [date, isValid, handleDateChange]
+  return [date, isValid, handleDateChange] // Explicitly returning handleDateChange as a callable function
 }

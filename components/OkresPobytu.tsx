@@ -10,11 +10,12 @@ import {
 } from 'react-native'
 import { backgroundColor, primary, textColor } from '../utils/styles'
 import DateInputMask from './DateInputMask'
+import { isValidDate } from '../utils/validateDate'
 
 export default function OkresPobytu({
   setDniPobytu,
 }: {
-  setDniPobytu: (e: number) => void
+  setDniPobytu: (e: number | Function) => void
 }) {
   type okresType = {
     start: string
@@ -31,6 +32,11 @@ export default function OkresPobytu({
     Keyboard.dismiss()
     if (!startDate || !endDate) {
       Alert.alert('Błąd', 'Proszę uzupełnić obie daty.')
+      return
+    }
+
+    if (!isValidDate(startDate) || !isValidDate(endDate)) {
+      Alert.alert('Błąd', 'Proszę podać poprawne daty.')
       return
     }
 
@@ -63,7 +69,6 @@ export default function OkresPobytu({
         { start: startDate, end: endDate, duration: diffDays },
       ])
 
-      // Resetowanie inputów
       setResetInputsTrigger(prev => !prev)
     } catch (error) {
       alert('Wystąpił błąd podczas obliczania różnicy dat.')
@@ -177,7 +182,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: backgroundColor,
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 'bold',
   },
   divider: {

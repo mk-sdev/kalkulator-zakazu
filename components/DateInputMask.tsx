@@ -11,15 +11,17 @@ import {
   textColor,
 } from '../utils/styles'
 
+interface DateInputMaskProps {
+  setDateState: (e: string) => void 
+  label: string
+  resetTrigger?: boolean
+}
+
 const DateInputMask = ({
   setDateState,
   label,
   resetTrigger,
-}: {
-  setDateState: (e: unknown) => void
-  label: string
-  resetTrigger: boolean
-}) => {
+}: DateInputMaskProps) => {
   const [date, isValid, handleDateChange] = useDate()
   const [isFocused, setIsFocused] = useState(false)
 
@@ -27,11 +29,8 @@ const DateInputMask = ({
     setDateState(date)
   }, [date])
 
-  // Resetujemy stan daty, gdy resetTrigger się zmienia
   useEffect(() => {
-    if (resetTrigger) {
       handleDateChange('')
-    }
   }, [resetTrigger])
 
   function returnBorderColor() {

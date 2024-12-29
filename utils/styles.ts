@@ -1,7 +1,9 @@
+import { TextStyle } from "react-native"
+
 export const primary = '#007BFF'
 export const textColor = '#003976'
 
-export const inputLabelStyle = {
+export const inputLabelStyle: TextStyle = {
   fontSize: 16,
   fontWeight: 'bold',
   opacity: 0.65,

@@ -10,7 +10,7 @@ import {
 import { backgroundColor, primary, textColor } from '../utils/styles'
 import DateInputMask from './DateInput'
 import { isValidDate } from '../utils/validateDate'
-import Card from './Card'
+import Cards from './Cards'
 import { okresType } from '../utils/types'
 
 export default function OkresPobytu({
@@ -127,7 +127,7 @@ export default function OkresPobytu({
         </React.Fragment>
       )}
 
-      <Card okresyPobytu={okresyPobytu} usunOkresPobytu={usunOkresPobytu} />
+      <Cards okresyPobytu={okresyPobytu} usunOkresPobytu={usunOkresPobytu} />
     </View>
   )
 }

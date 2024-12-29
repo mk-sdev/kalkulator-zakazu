@@ -4,7 +4,7 @@ import { backgroundColor, textColor } from '../utils/styles'
 import Feather from '@expo/vector-icons/Feather'
 import { okresType } from '../utils/types'
 
-export default function Card({
+export default function Cards({
   okresyPobytu,
   usunOkresPobytu,
 }: {
@@ -15,7 +15,7 @@ export default function Card({
     <View style={styles.okresyContainer}>
       {okresyPobytu.map((okres, index) => {
         return (
-          <View key={index} style={styles.okresCard}>
+          <View key={okres.start} style={styles.okresCard}>
             <View style={styles.okresContent}>
               <Text
                 style={styles.okresText}

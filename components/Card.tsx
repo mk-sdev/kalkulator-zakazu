@@ -13,7 +13,7 @@ export default function Card({
 }) {
   return (
     <View style={styles.okresyContainer}>
-      {okresyPobytu.reverse().map((okres, index) => {
+      {okresyPobytu.map((okres, index) => {
         return (
           <View key={index} style={styles.okresCard}>
             <View style={styles.okresContent}>

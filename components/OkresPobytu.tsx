@@ -82,10 +82,18 @@ export default function OkresPobytu({
     setDniPobytu(lacznyOkres)
   }, [okresyPobytu])
 
+  function setButtonColor(
+    pressed: boolean
+  ): '#0056b3' | '#3c6188' | typeof primary {
+    if (pressed) return '#0056b3'
+    if (!isValidDate(startDate) || !isValidDate(endDate)) return '#3c6188'
+    return primary
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.inputContainer}>
-        <Text style={styles.headerText}>Okresy pobytów w zakładzie</Text>
+        <Text style={styles.headerText}>Wprowadź okresy pobytów</Text>
         <View style={styles.dateInputRow}>
           <DateInputMask
             setDateState={setStartDate}
@@ -101,15 +109,23 @@ export default function OkresPobytu({
         <Pressable
           style={({ pressed }) => [
             styles.button,
-            pressed ? styles.buttonPressed : null,
+            { backgroundColor: setButtonColor(pressed) },
+            // pressed ? styles.buttonPressed : null,
           ]}
           onPress={() => countDays()}
         >
-          <Text style={styles.buttonText}>Dodaj okres pobytu</Text>
+          <Text style={styles.buttonText}>Zatwierdź</Text>
         </Pressable>
       </View>
 
-      {okresyPobytu.length > 0 && <View style={styles.divider}></View>}
+      {okresyPobytu.length > 0 && (
+        <React.Fragment>
+          <View style={styles.divider}></View>
+          <Text style={[styles.headerText, { marginTop: 20 }]}>
+            Okresy pobytów
+          </Text>
+        </React.Fragment>
+      )}
 
       <Card okresyPobytu={okresyPobytu} usunOkresPobytu={usunOkresPobytu} />
     </View>
@@ -131,7 +147,7 @@ const styles = StyleSheet.create({
   },
   headerText: {
     textAlign: 'center',
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: 'bold',
     opacity: 0.4,
     color: textColor,
@@ -148,12 +164,9 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     elevation: 1,
   },
-  buttonPressed: {
-    backgroundColor: '#0056b3',
-  },
   buttonText: {
     color: backgroundColor,
-    fontSize: 14,
+    fontSize: 15,
     fontWeight: 'bold',
   },
   divider: {

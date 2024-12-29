@@ -35,7 +35,7 @@ const DateInputMask = ({
 
   function returnBorderColor() {
     if (isFocused) return primary
-    if (!isValid || date.length > 0) return 'red'
+    if (!isValid || (date.length > 0 && date.length < 10)) return 'red'
     return inputColor
   }
 

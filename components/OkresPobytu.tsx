@@ -1,4 +1,3 @@
-import Feather from '@expo/vector-icons/Feather'
 import React, { useEffect, useState } from 'react'
 import {
   Alert,
@@ -11,17 +10,14 @@ import {
 import { backgroundColor, primary, textColor } from '../utils/styles'
 import DateInputMask from './DateInputMask'
 import { isValidDate } from '../utils/validateDate'
+import Card from './Card'
+import { okresType } from '../utils/types'
 
 export default function OkresPobytu({
   setDniPobytu,
 }: {
   setDniPobytu: (e: number | Function) => void
 }) {
-  type okresType = {
-    start: string
-    end: string
-    duration: number
-  }
 
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
@@ -116,31 +112,7 @@ export default function OkresPobytu({
 
       {okresyPobytu.length > 0 && <View style={styles.divider}></View>}
 
-      <View style={styles.okresyContainer}>
-        {okresyPobytu.map((okres, index) => {
-          return (
-            <View key={index} style={styles.okresCard}>
-              <View style={styles.okresContent}>
-                <Text
-                  style={styles.okresText}
-                >{`${okres.start} - ${okres.end}`}</Text>
-                <Text
-                  style={styles.okresDuration}
-                >{`Liczba dni: ${okres.duration}`}</Text>
-              </View>
-              <Feather
-                name="trash-2"
-                size={24}
-                color="red"
-                style={styles.trashIcon}
-                onPress={() => {
-                  usunOkresPobytu(index, okres.duration)
-                }}
-              />
-            </View>
-          )
-        })}
-      </View>
+      <Card okresyPobytu={okresyPobytu} usunOkresPobytu={usunOkresPobytu} />
     </View>
   )
 }
@@ -191,39 +163,5 @@ const styles = StyleSheet.create({
     backgroundColor: textColor,
     marginTop: 20,
     opacity: 0.1,
-  },
-  okresyContainer: {
-    width: '100%',
-  },
-  okresCard: {
-    backgroundColor: backgroundColor,
-    borderRadius: 8,
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    flexDirection: 'row',
-    marginTop: 20,
-  },
-  okresContent: {
-    justifyContent: 'center',
-    width: '85%',
-    padding: 20,
-  },
-  okresText: {
-    fontSize: 15,
-    fontWeight: 'bold',
-    marginBottom: 5,
-    color: textColor,
-  },
-  okresDuration: {
-    fontSize: 17,
-    color: textColor,
-    opacity: 0.7,
-  },
-  trashIcon: {
-    alignSelf: 'center',
-    backgroundColor: 'rgba(255, 0, 0, .1)',
-    borderRadius: 50,
-    padding: 7,
-    right: 10,
   },
 })

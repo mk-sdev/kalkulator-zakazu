@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Alert } from 'react-native'
-import { isValidDate } from '../utils/validateDate'
+import { isValidDate } from './validateDate'
 
 export default function useDate(): [string, boolean, (text: string) => void] {
   const [date, setDate] = useState('')

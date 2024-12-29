@@ -19,13 +19,13 @@ export default function App() {
         const update = await Updates.checkForUpdateAsync()
         if (update.isAvailable) {
           // Jeśli dostępna jest aktualizacja, zapytaj, czy chce ją pobrać
-          const shouldUpdate = window.confirm(
-            'Dostępna jest nowa wersja aplikacji. Czy chcesz ją zainstalować?'
-          )
-          if (shouldUpdate) {
+          // const shouldUpdate = window.confirm(
+          //   'Dostępna jest nowa wersja aplikacji. Czy chcesz ją zainstalować?'
+          // )
+          // if (shouldUpdate) {
             await Updates.fetchUpdateAsync()
             await Updates.reloadAsync() // Zrestartowanie aplikacji po aktualizacji
-          }
+          // }
         }
       } catch (error) {
         console.error('Błąd podczas sprawdzania aktualizacji:', error)
@@ -54,7 +54,7 @@ export default function App() {
           />
           <NumberInput setOkresZakazu={setOkresZakazu} />
         </View>
-        {/* @ts-ignore */}
+        
         <OkresPobytu setDniPobytu={setDniPobytu}></OkresPobytu>
         <Output
           okresZakazu={okresZakazu}

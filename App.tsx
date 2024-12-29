@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { ScrollView, StatusBar, StyleSheet, View, Alert } from 'react-native'
-import DateInputMask from './components/DateInputMask'
+import DateInputMask from './components/DateInput'
 import NumberInput from './components/NumberInput'
 import OkresPobytu from './components/OkresPobytu'
 import Output from './components/Output'
@@ -23,8 +23,8 @@ export default function App() {
           //   'Dostępna jest nowa wersja aplikacji. Czy chcesz ją zainstalować?'
           // )
           // if (shouldUpdate) {
-            await Updates.fetchUpdateAsync()
-            await Updates.reloadAsync() // Zrestartowanie aplikacji po aktualizacji
+          await Updates.fetchUpdateAsync()
+          await Updates.reloadAsync() // Zrestartowanie aplikacji po aktualizacji
           // }
         }
       } catch (error) {
@@ -54,7 +54,7 @@ export default function App() {
           />
           <NumberInput setOkresZakazu={setOkresZakazu} />
         </View>
-        
+
         <OkresPobytu setDniPobytu={setDniPobytu}></OkresPobytu>
         <Output
           okresZakazu={okresZakazu}

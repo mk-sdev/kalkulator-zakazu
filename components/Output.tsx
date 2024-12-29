@@ -11,8 +11,8 @@ export default function Output({
   dniPobytu: number
   startDate: string
 }) {
-  // Funkcja zwracająca datę po dodaniu dniPobytu i okresZakazu do startDate
-  function returnDate(): string {
+  // Funkcja obliczająca końcową datę po dodaniu dniPobytu i okresZakazu do startDate
+  function calculateDate(): string {
     // Konwersja startDate na obiekt Date
     const [startDay, startMonth, startYear] = startDate.split('/').map(Number)
     const start = new Date(startYear, startMonth - 1, startDay)
@@ -47,7 +47,7 @@ export default function Output({
           color: primary
         }}
       >
-        {returnDate()}
+        {calculateDate()}
       </Text>
     </View>
   )

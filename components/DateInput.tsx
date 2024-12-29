@@ -34,8 +34,8 @@ const DateInputMask = ({
   }, [resetTrigger])
 
   function returnBorderColor() {
-    if (!isValid) return 'red'
     if (isFocused) return primary
+    if (!isValid || date.length > 0) return 'red'
     return inputColor
   }
 

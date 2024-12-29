@@ -8,7 +8,7 @@ import {
   View,
 } from 'react-native'
 import { backgroundColor, primary, textColor } from '../utils/styles'
-import DateInputMask from './DateInputMask'
+import DateInputMask from './DateInput'
 import { isValidDate } from '../utils/validateDate'
 import Card from './Card'
 import { okresType } from '../utils/types'
@@ -18,7 +18,6 @@ export default function OkresPobytu({
 }: {
   setDniPobytu: (e: number | Function) => void
 }) {
-
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
   const [okresyPobytu, setOkresyPobytu] = useState<okresType[]>([])

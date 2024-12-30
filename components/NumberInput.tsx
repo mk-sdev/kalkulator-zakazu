@@ -26,16 +26,25 @@ const NumberInput = ({
       <TextInput
         style={[
           { borderColor: isFocused ? primary : inputColor },
+          { borderWidth: isFocused ? 1.5 : 1 },
           styles.input,
         ]}
         keyboardType="numeric"
         value={number}
         onChangeText={text => setNumber(text.replace(/[^0-9]/g, ''))} // Usuwa wszystko, co nie jest cyfrą
         placeholder="np. 10"
-        maxLength={10}
+        maxLength={2}
         placeholderTextColor={inputColor}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
+        accessibilityLabel="Okres zakazu w latach"
+        accessibilityHint="Wprowadź liczbę lat trwania okresu zakazu. Wartość musi być pomiędzy 0 a 99. Pole nie jest obowiązkowe."
+        accessible={true}
+        accessibilityValue={{
+          min: 0,
+          max: 99,
+          now: number ? parseInt(number, 10) : undefined, // Jeśli podano wartość, przekazuje jej aktualną liczbę
+        }}
       />
     </View>
   )
@@ -46,12 +55,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   input: {
-    borderWidth: 1,
     padding: 10,
     marginTop: 10,
     borderRadius: inputRadius,
     minWidth: 200,
-    color: textColor
+    color: textColor,
   },
 })
 

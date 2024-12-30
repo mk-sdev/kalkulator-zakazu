@@ -40,7 +40,12 @@ export default function Output({
   return (
     <View>
       {calculatedDate && (
-        <Text style={{ fontSize: 17, opacity: 0.7, color: textColor }}>
+        <Text
+          style={{ fontSize: 17, opacity: 0.7, color: textColor }}
+          accessibilityLabel="Przewidywana data końca zakazu"
+          accessibilityRole="text"
+          accessible={true}
+        >
           Przewidywana data końca zakazu:
         </Text>
       )}
@@ -52,6 +57,9 @@ export default function Output({
           marginTop: 10,
           color: primary,
         }}
+        accessibilityLabel={`Data końca zakazu to ${calculatedDate}`}
+        accessibilityRole="text"
+        accessible={true}
       >
         {calculatedDate}
       </Text>

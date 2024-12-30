@@ -35,7 +35,7 @@ const DateInputMask = ({
 
   function returnBorderColor() {
     if (isFocused) return primary
-    if (!isValid || (date.length > 0 && date.length < 10)) return 'red'
+    if (!isValid || (!isFocused && date.length > 0 && date.length < 10)) return 'red'
     return inputColor
   }
 
@@ -53,14 +53,17 @@ const DateInputMask = ({
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
         placeholderTextColor={inputColor}
+        accessibilityLabel={label}
+        accessibilityHint="Wprowadź datę w formacie DD/MM/RRRR."
         style={{
-          borderWidth: 1,
           padding: 10,
           marginTop: 10,
           borderRadius: inputRadius,
           borderColor: returnBorderColor(),
           backgroundColor: backgroundColor,
           color: textColor,
+          borderWidth:
+            isFocused || !isValid || (date.length > 0 && !isFocused) ? 1.5 : 1,
         }}
       />
     </View>

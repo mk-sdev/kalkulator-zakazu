@@ -110,9 +110,11 @@ export default function OkresPobytu({
           style={({ pressed }) => [
             styles.button,
             { backgroundColor: setButtonColor(pressed) },
-            // pressed ? styles.buttonPressed : null,
           ]}
           onPress={() => countDays()}
+          accessibilityLabel="Zatwierdź daty"
+          accessibilityRole="button"
+          accessible={true}
         >
           <Text style={styles.buttonText}>Zatwierdź</Text>
         </Pressable>

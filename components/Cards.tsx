@@ -15,7 +15,12 @@ export default function Cards({
     <View style={styles.okresyContainer}>
       {okresyPobytu.map((okres, index) => {
         return (
-          <View key={okres.start} style={styles.okresCard}>
+          <View
+            key={okres.start}
+            style={styles.okresCard}
+            accessible={true}
+            accessibilityLabel={`Okres pobytu od ${okres.start} do ${okres.end}. Liczba dni: ${okres.duration}.`}
+          >
             <View style={styles.okresContent}>
               <Text
                 style={styles.okresText}
@@ -32,6 +37,9 @@ export default function Cards({
               onPress={() => {
                 usunOkresPobytu(index, okres.duration)
               }}
+              accessibilityLabel={`Usuń okres pobytu od ${okres.start} do ${okres.end}`}
+              accessibilityRole="button"
+              accessible={true}
             />
           </View>
         )

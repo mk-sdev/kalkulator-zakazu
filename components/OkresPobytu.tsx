@@ -86,14 +86,17 @@ export default function OkresPobytu({
     pressed: boolean
   ): '#0056b3' | '#3c6188' | typeof primary {
     if (pressed) return '#0056b3'
-    if (!isValidDate(startDate) || !isValidDate(endDate)) return '#3c6188'
+    if (!isValidDate(startDate) || !isValidDate(endDate) || startDate > endDate)
+      return '#3c6188'
     return primary
   }
 
   return (
     <View style={styles.container}>
       <View style={styles.inputContainer}>
-        <Text style={styles.headerText}>Wprowadź okres pobytu</Text>
+        <Text style={styles.headerText} accessibilityRole="header">
+          Wprowadź okres pobytu
+        </Text>
         <View style={styles.dateInputRow}>
           <DateInputMask
             setDateState={setStartDate}
@@ -123,7 +126,10 @@ export default function OkresPobytu({
       {okresyPobytu.length > 0 && (
         <React.Fragment>
           <View style={styles.divider}></View>
-          <Text style={[styles.headerText, { marginTop: 20 }]}>
+          <Text
+            style={[styles.headerText, { marginTop: 20 }]}
+            accessibilityRole="header"
+          >
             Okresy pobytów:
           </Text>
         </React.Fragment>

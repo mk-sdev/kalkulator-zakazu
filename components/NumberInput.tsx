@@ -31,7 +31,11 @@ const NumberInput = ({
         ]}
         keyboardType="numeric"
         value={number}
-        onChangeText={text => setNumber(text.replace(/[^0-9]/g, ''))} // Usuwa wszystko, co nie jest cyfrą
+        onChangeText={text => {
+          const sanitizedText = text.replace(/[^0-9]/g, '') // deletes non-numeric characters
+          const withoutLeadingZeros = sanitizedText.replace(/^0+/, '') // deletes leading zeros
+          setNumber(withoutLeadingZeros) 
+        }}
         placeholder="np. 10"
         maxLength={2}
         placeholderTextColor={inputColor}

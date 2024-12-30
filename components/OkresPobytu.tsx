@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import {
-  Alert,
   Keyboard,
   Pressable,
   StyleSheet,
@@ -12,28 +11,26 @@ import DateInputMask from './DateInput'
 import { isValidDate } from '../utils/validateDate'
 import Cards from './Cards'
 import { okresType } from '../utils/types'
+import { datesInOrder } from '../utils/datesInOrder'
+import { validateOkresPobytu } from '../utils/validateOkresPobytu'
 
 export default function OkresPobytu({
   setDniPobytu,
+  startZakazu,
 }: {
   setDniPobytu: (e: number | Function) => void
+  startZakazu: string
 }) {
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
   const [okresyPobytu, setOkresyPobytu] = useState<okresType[]>([])
   const [resetInputsTrigger, setResetInputsTrigger] = useState(false)
 
-  function countDays(): void {
+  function countDays(): void | number {
     Keyboard.dismiss()
-    if (!startDate || !endDate) {
-      Alert.alert('Błąd', 'Proszę uzupełnić obie daty.')
-      return
-    }
 
-    if (!isValidDate(startDate) || !isValidDate(endDate)) {
-      Alert.alert('Błąd', 'Proszę podać poprawne daty.')
-      return
-    }
+    const result = validateOkresPobytu(startDate, endDate, startZakazu)
+    if (result !== 1) return
 
     try {
       const [startDay, startMonth, startYear] = startDate.split('/').map(Number)
@@ -41,19 +38,6 @@ export default function OkresPobytu({
 
       const start = new Date(startYear, startMonth - 1, startDay)
       const end = new Date(endYear, endMonth - 1, endDay)
-
-      if (isNaN(start.getTime()) || isNaN(end.getTime())) {
-        Alert.alert('Błąd', 'Proszę podać poprawne daty.')
-        return
-      }
-
-      if (start > end) {
-        Alert.alert(
-          'Błąd',
-          'Data końcowa nie może być wcześniejsza niż początkowa.'
-        )
-        return
-      }
 
       const diffTime = end.getTime() - start.getTime()
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
@@ -86,9 +70,25 @@ export default function OkresPobytu({
     pressed: boolean
   ): '#0056b3' | '#3c6188' | typeof primary {
     if (pressed) return '#0056b3'
-    if (!isValidDate(startDate) || !isValidDate(endDate) || startDate > endDate)
+    if (
+      !isValidDate(startDate) ||
+      !isValidDate(endDate) ||
+      datesInOrder(startDate, endDate) < 1 ||
+      datesInOrder(startZakazu, startDate) === -1
+    )
       return '#3c6188'
     return primary
+  }
+
+  function setButtonOpacity(): number {
+    if (
+      !isValidDate(startDate) ||
+      !isValidDate(endDate) ||
+      datesInOrder(startDate, endDate) < 1 ||
+      datesInOrder(startZakazu, startDate) === -1
+    )
+      return 0.55
+    return 1
   }
 
   return (
@@ -113,6 +113,7 @@ export default function OkresPobytu({
           style={({ pressed }) => [
             styles.button,
             { backgroundColor: setButtonColor(pressed) },
+            { opacity: setButtonOpacity() },
           ]}
           onPress={() => countDays()}
           accessibilityLabel="Zatwierdź daty"

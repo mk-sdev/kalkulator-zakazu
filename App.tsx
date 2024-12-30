@@ -60,7 +60,7 @@ export default function App() {
           <NumberInput setOkresZakazu={setOkresZakazu} />
         </View>
 
-        <OkresPobytu setDniPobytu={setDniPobytu}></OkresPobytu>
+        <OkresPobytu setDniPobytu={setDniPobytu} startZakazu={startDate}></OkresPobytu>
         <Output
           okresZakazu={okresZakazu}
           startDate={startDate}

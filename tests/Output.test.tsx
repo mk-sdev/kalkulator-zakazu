@@ -3,8 +3,8 @@ import { render, screen } from '@testing-library/react-native'
 import Output from '../components/Output'
 
 describe('Output Component', () => {
-  it('should return an empty string if startDate is invalid', () => {
-    render(<Output startDate="invalid-date" dniPobytu={5} okresZakazu={1} />)
+  it('should return an empty string if startDate is an empty string', () => {
+    render(<Output startDate="" dniPobytu={5} okresZakazu={1} />)
 
     // Jeśli data jest niepoprawna, komponent powinien wyświetlić pustą datę
     expect(
@@ -13,7 +13,17 @@ describe('Output Component', () => {
     expect(screen.queryByText('')).toBeTruthy() // Jeżeli zwróci pusty ciąg
   })
 
-  it('should return an empty string if the date calculation results in an invalid date', () => {
+  it('should return an empty string if startDate is too short', () => {
+    render(<Output startDate="1" dniPobytu={5} okresZakazu={1} />)
+
+    // Jeśli data jest niepoprawna, komponent powinien wyświetlić pustą datę
+    expect(
+      screen.queryByText('Przewidywana data końca zakazu:')
+    ).not.toBeTruthy()
+    expect(screen.queryByText('')).toBeTruthy() // Jeżeli zwróci pusty ciąg
+  })
+
+  it('should return an empty string if startDate is invalid', () => {
     render(<Output startDate="31/02/2023" dniPobytu={365} okresZakazu={1} />)
 
     // Sprawdzamy, czy data jest pustym ciągiem w przypadku niepoprawnej daty

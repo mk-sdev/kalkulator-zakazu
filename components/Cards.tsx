@@ -2,32 +2,32 @@ import { View, Text, StyleSheet } from 'react-native'
 import React from 'react'
 import { backgroundColor, textColor } from '../utils/styles'
 import Feather from '@expo/vector-icons/Feather'
-import { okresType } from '../utils/types'
+import { periodType } from '../utils/types'
 
 export default function Cards({
-  okresyPobytu,
-  usunOkresPobytu,
+  periods,
+  deletePeriod,
 }: {
-  okresyPobytu: okresType[]
-  usunOkresPobytu: (i: number, d: number) => void
+  periods: periodType[]
+  deletePeriod: (i: number, d: number) => void
 }) {
   return (
-    <View style={styles.okresyContainer}>
-      {okresyPobytu.map((okres, index) => {
+    <View style={styles.periodsContainer}>
+      {periods.map((period, index) => {
         return (
           <View
-            key={okres.start}
-            style={styles.okresCard}
+            key={period.start}
+            style={styles.periodCard}
             accessible={true}
-            accessibilityLabel={`Okres pobytu od ${okres.start} do ${okres.end}. Liczba dni: ${okres.duration}.`}
+            accessibilityLabel={`Okres pobytu od ${period.start} do ${period.end}. Liczba dni: ${period.duration}.`}
           >
-            <View style={styles.okresContent}>
+            <View style={styles.periodContent}>
               <Text
-                style={styles.okresText}
-              >{`${okres.start} - ${okres.end}`}</Text>
+                style={styles.periodRange}
+              >{`${period.start} - ${period.end}`}</Text>
               <Text
-                style={styles.okresDuration}
-              >{`Liczba dni: ${okres.duration}`}</Text>
+                style={styles.periodDuration}
+              >{`Liczba dni: ${period.duration}`}</Text>
             </View>
             <Feather
               name="trash-2"
@@ -35,9 +35,9 @@ export default function Cards({
               color="red"
               style={styles.trashIcon}
               onPress={() => {
-                usunOkresPobytu(index, okres.duration)
+                deletePeriod(index, period.duration)
               }}
-              accessibilityLabel={`Usuń okres pobytu od ${okres.start} do ${okres.end}`}
+              accessibilityLabel={`Usuń okres pobytu od ${period.start} do ${period.end}`}
               accessibilityRole="button"
               accessible={true}
             />
@@ -49,10 +49,10 @@ export default function Cards({
 }
 
 const styles = StyleSheet.create({
-  okresyContainer: {
+  periodsContainer: {
     width: '100%',
   },
-  okresCard: {
+  periodCard: {
     backgroundColor: backgroundColor,
     borderRadius: 8,
     shadowOpacity: 0.1,
@@ -60,18 +60,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: 20,
   },
-  okresContent: {
+  periodContent: {
     justifyContent: 'center',
     width: '85%',
     padding: 20,
   },
-  okresText: {
+  periodRange: {
     fontSize: 15,
     fontWeight: 'bold',
     marginBottom: 5,
     color: textColor,
   },
-  okresDuration: {
+  periodDuration: {
     fontSize: 17,
     color: textColor,
     opacity: 0.7,

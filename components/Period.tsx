@@ -1,40 +1,42 @@
 import React, { useEffect, useState } from 'react'
-import {
-  Keyboard,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native'
+import { Keyboard, Pressable, StyleSheet, Text, View } from 'react-native'
 import { backgroundColor, primary, textColor } from '../utils/styles'
 import DateInputMask from './DateInput'
-import { isValidDate } from '../utils/validateDate'
+import { isValidDate } from '../utils/isValidDate'
 import Cards from './Cards'
-import { okresType } from '../utils/types'
-import { datesInOrder } from '../utils/datesInOrder'
-import { validateOkresPobytu } from '../utils/validateOkresPobytu'
+import { periodType } from '../utils/types'
+import { compareDates } from '../utils/compareDates'
+import { validatePeriod } from '../utils/validatePeriod'
 
-export default function OkresPobytu({
-  setDniPobytu,
-  startZakazu,
+export default function Period({
+  setDaysInPrison,
+  banStartDate,
 }: {
-  setDniPobytu: (e: number | Function) => void
-  startZakazu: string
+  setDaysInPrison: (e: number | Function) => void
+  banStartDate: string
 }) {
-  const [startDate, setStartDate] = useState('')
-  const [endDate, setEndDate] = useState('')
-  const [okresyPobytu, setOkresyPobytu] = useState<okresType[]>([])
+  const [periodStartDate, setPeriodStartDate] = useState('')
+  const [periodEndDate, setPeriodEndDate] = useState('')
+  const [periods, setPeriods] = useState<periodType[]>([])
   const [resetInputsTrigger, setResetInputsTrigger] = useState(false)
 
-  function countDays(): void | number {
+  useEffect(() => {
+    let totalDaysInPrison: number = 0
+    periods.forEach(per => (totalDaysInPrison += per.duration))
+    setDaysInPrison(totalDaysInPrison)
+  }, [periods])
+
+  function addPeriod(): void | number {
     Keyboard.dismiss()
 
-    const result = validateOkresPobytu(startDate, endDate, startZakazu)
+    const result = validatePeriod(periodStartDate, periodEndDate, banStartDate)
     if (result !== 1) return
 
     try {
-      const [startDay, startMonth, startYear] = startDate.split('/').map(Number)
-      const [endDay, endMonth, endYear] = endDate.split('/').map(Number)
+      const [startDay, startMonth, startYear] = periodStartDate
+        .split('/')
+        .map(Number)
+      const [endDay, endMonth, endYear] = periodEndDate.split('/').map(Number)
 
       const start = new Date(startYear, startMonth - 1, startDay)
       const end = new Date(endYear, endMonth - 1, endDay)
@@ -42,10 +44,10 @@ export default function OkresPobytu({
       const diffTime = end.getTime() - start.getTime()
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
 
-      setDniPobytu((prev: number) => prev + diffDays)
-      setOkresyPobytu([
-        ...okresyPobytu,
-        { start: startDate, end: endDate, duration: diffDays },
+      setDaysInPrison((prev: number) => prev + diffDays)
+      setPeriods([
+        ...periods,
+        { start: periodStartDate, end: periodEndDate, duration: diffDays },
       ])
 
       setResetInputsTrigger(prev => !prev)
@@ -55,26 +57,20 @@ export default function OkresPobytu({
     }
   }
 
-  function usunOkresPobytu(index: number, duration: number): void {
-    setOkresyPobytu(prev => prev.filter((_, i) => i !== index))
-    setDniPobytu((prev: number) => prev - duration)
+  function deletePeriod(index: number, duration: number): void {
+    setPeriods(prev => prev.filter((_, i) => i !== index))
+    setDaysInPrison((prev: number) => prev - duration)
   }
-
-  useEffect(() => {
-    let lacznyOkres: number = 0
-    okresyPobytu.forEach(okres => (lacznyOkres += okres.duration))
-    setDniPobytu(lacznyOkres)
-  }, [okresyPobytu])
 
   function setButtonColor(
     pressed: boolean
   ): '#0056b3' | '#3c6188' | typeof primary {
     if (pressed) return '#0056b3'
     if (
-      !isValidDate(startDate) ||
-      !isValidDate(endDate) ||
-      datesInOrder(startDate, endDate) < 1 ||
-      datesInOrder(startZakazu, startDate) === -1
+      !isValidDate(periodStartDate) ||
+      !isValidDate(periodEndDate) ||
+      compareDates(periodStartDate, periodEndDate) < 1 ||
+      compareDates(banStartDate, periodStartDate) === -1
     )
       return '#3c6188'
     return primary
@@ -82,10 +78,10 @@ export default function OkresPobytu({
 
   function setButtonOpacity(): number {
     if (
-      !isValidDate(startDate) ||
-      !isValidDate(endDate) ||
-      datesInOrder(startDate, endDate) < 1 ||
-      datesInOrder(startZakazu, startDate) === -1
+      !isValidDate(periodStartDate) ||
+      !isValidDate(periodEndDate) ||
+      compareDates(periodStartDate, periodEndDate) < 1 ||
+      compareDates(banStartDate, periodStartDate) === -1
     )
       return 0.55
     return 1
@@ -99,12 +95,12 @@ export default function OkresPobytu({
         </Text>
         <View style={styles.dateInputRow}>
           <DateInputMask
-            setDateState={setStartDate}
+            setDateState={setPeriodStartDate}
             label="początek"
             resetTrigger={resetInputsTrigger}
           />
           <DateInputMask
-            setDateState={setEndDate}
+            setDateState={setPeriodEndDate}
             label="koniec"
             resetTrigger={resetInputsTrigger}
           />
@@ -115,7 +111,7 @@ export default function OkresPobytu({
             { backgroundColor: setButtonColor(pressed) },
             { opacity: setButtonOpacity() },
           ]}
-          onPress={() => countDays()}
+          onPress={() => addPeriod()}
           accessibilityLabel="Zatwierdź daty"
           accessibilityRole="button"
           accessible={true}
@@ -124,7 +120,7 @@ export default function OkresPobytu({
         </Pressable>
       </View>
 
-      {okresyPobytu.length > 0 && (
+      {periods.length > 0 && (
         <React.Fragment>
           <View style={styles.divider}></View>
           <Text
@@ -136,7 +132,7 @@ export default function OkresPobytu({
         </React.Fragment>
       )}
 
-      <Cards okresyPobytu={okresyPobytu} usunOkresPobytu={usunOkresPobytu} />
+      <Cards periods={periods} deletePeriod={deletePeriod} />
     </View>
   )
 }

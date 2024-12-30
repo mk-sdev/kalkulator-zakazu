@@ -1,42 +1,29 @@
 import { useState, useEffect } from 'react'
-import {
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  View,
-} from 'react-native'
+import { ScrollView, StatusBar, StyleSheet, View } from 'react-native'
 import DateInputMask from './components/DateInput'
 import NumberInput from './components/NumberInput'
-import OkresPobytu from './components/OkresPobytu'
+import Period from './components/Period'
 import Output from './components/Output'
 import { backgroundColor } from './utils/styles'
 import * as Updates from 'expo-updates'
 
 export default function App() {
-  const [startDate, setStartDate] = useState('')
-  const [okresZakazu, setOkresZakazu] = useState(0)
-  const [dniPobytu, setDniPobytu] = useState(0) //okres pobytu w dniach
+  const [banStartDate, setBanStartDate] = useState('') // data rozpoczęcia zakazu
+  const [banPeriod, setBanPeriod] = useState(0) // okrez zakazu w latach
+  const [daysInPrison, setDaysInPrison] = useState(0) // łączna liczba dni wszystkich okresów pobytu
 
-  // Dodajemy efekt do sprawdzania dostępnych aktualizacji
   useEffect(() => {
     const checkForUpdates = async () => {
       try {
         const update = await Updates.checkForUpdateAsync()
         if (update.isAvailable) {
-          // Jeśli dostępna jest aktualizacja, zapytaj, czy chce ją pobrać
-          // const shouldUpdate = window.confirm(
-          //   'Dostępna jest nowa wersja aplikacji. Czy chcesz ją zainstalować?'
-          // )
-          // if (shouldUpdate) {
           await Updates.fetchUpdateAsync()
-          await Updates.reloadAsync() // Zrestartowanie aplikacji po aktualizacji
-          // }
+          await Updates.reloadAsync() // Restart the app after updation
         }
       } catch (error) {
         console.error('Błąd podczas sprawdzania aktualizacji:', error)
       }
     }
-
     checkForUpdates()
   }, [])
 
@@ -54,17 +41,20 @@ export default function App() {
           }}
         >
           <DateInputMask
-            setDateState={setStartDate}
+            setDateState={setBanStartDate}
             label="rozpoczęcie zakazu"
           />
-          <NumberInput setOkresZakazu={setOkresZakazu} />
+          <NumberInput setBanPeriod={setBanPeriod} />
         </View>
 
-        <OkresPobytu setDniPobytu={setDniPobytu} startZakazu={startDate}></OkresPobytu>
+        <Period
+          setDaysInPrison={setDaysInPrison}
+          banStartDate={banStartDate}
+        ></Period>
         <Output
-          okresZakazu={okresZakazu}
-          startDate={startDate}
-          dniPobytu={dniPobytu}
+          banStartDate={banStartDate}
+          banPeriod={banPeriod}
+          daysInPrison={daysInPrison}
         />
         <StatusBar backgroundColor={backgroundColor} barStyle="dark-content" />
       </ScrollView>

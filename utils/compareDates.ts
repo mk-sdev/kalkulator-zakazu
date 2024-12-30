@@ -18,7 +18,7 @@
  * @example
  * datesInOrder("01/01/2023", "01/01/2023"); // Returns 0
  */
-export function datesInOrder(date1: string, date2: string): -1 | 0 | 1 {
+export function compareDates(date1: string, date2: string): -1 | 0 | 1 {
   const [day1, month1, year1] = date1.split('/').map(Number)
   const [day2, month2, year2] = date2.split('/').map(Number)
 

@@ -1,4 +1,4 @@
-import { isValidDate } from '../utils/validateDate';
+import { isValidDate } from '../utils/isValidDate'
 
 describe('isValidDate', () => {
   test('returns true for valid dates', () => {

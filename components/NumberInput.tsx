@@ -8,17 +8,13 @@ import {
   textColor,
 } from '../utils/styles'
 
-const NumberInput = ({
-  setOkresZakazu,
-}: {
-  setOkresZakazu: (e: number) => void
-}) => {
-  const [number, setNumber] = useState('')
+const NumberInput = ({ setBanPeriod }: { setBanPeriod: (e: number) => void }) => {
+  const [years, setYears] = useState('')
   const [isFocused, setIsFocused] = useState(false)
 
   useEffect(() => {
-    setOkresZakazu(parseInt(number, 10))
-  }, [number])
+    setBanPeriod(parseInt(years, 10))
+  }, [years])
 
   return (
     <View style={styles.container}>
@@ -30,11 +26,11 @@ const NumberInput = ({
           styles.input,
         ]}
         keyboardType="numeric"
-        value={number}
+        value={years}
         onChangeText={text => {
           const sanitizedText = text.replace(/[^0-9]/g, '') // deletes non-numeric characters
           const withoutLeadingZeros = sanitizedText.replace(/^0+/, '') // deletes leading zeros
-          setNumber(withoutLeadingZeros) 
+          setYears(withoutLeadingZeros)
         }}
         placeholder="np. 10"
         maxLength={2}
@@ -47,7 +43,7 @@ const NumberInput = ({
         accessibilityValue={{
           min: 0,
           max: 99,
-          now: number ? parseInt(number, 10) : undefined, // Jeśli podano wartość, przekazuje jej aktualną liczbę
+          now: years ? parseInt(years, 10) : undefined,
         }}
       />
     </View>

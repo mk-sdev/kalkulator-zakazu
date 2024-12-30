@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Text, View } from 'react-native'
 import { TextInputMask } from 'react-native-masked-text'
-import useDate from '../utils/useDate'
+import useDateInputHandler from '../utils/useDateInputHandler'
 import {
   backgroundColor,
   inputColor,
@@ -22,7 +22,7 @@ const DateInputMask = ({
   label,
   resetTrigger,
 }: DateInputMaskProps) => {
-  const [date, isValid, handleDateChange] = useDate()
+  const [date, isValid, handleDateChange] = useDateInputHandler()
   const [isFocused, setIsFocused] = useState(false)
 
   useEffect(() => {
@@ -35,7 +35,8 @@ const DateInputMask = ({
 
   function returnBorderColor() {
     if (isFocused) return primary
-    if (!isValid || (!isFocused && date.length > 0 && date.length < 10)) return 'red'
+    if (!isValid || (!isFocused && date.length > 0 && date.length < 10))
+      return 'red'
     return inputColor
   }
 

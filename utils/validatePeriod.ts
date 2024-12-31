@@ -5,9 +5,9 @@ import { compareDates } from './compareDates'
 /**
  * Checks if a period can be added to the list
  *
- * @param {string} periodStartDate - data rozpoczęcia pobytu.
- * @param {string} periodEndDate - data zakończenia pobytu.
- * @param {string} banStartDate - data rozpoczęcia zakazu.
+ * @param {string} periodStartDate - data rozpoczęcia pobytu
+ * @param {string} periodEndDate - data zakończenia pobytu
+ * @param {string} banStartDate - data rozpoczęcia zakazu
  * @returns {1 | -1 | -2 | -3 | -4}
  */
 export function validatePeriod(
@@ -25,7 +25,7 @@ export function validatePeriod(
     return -2
   }
 
-  if (compareDates(banStartDate, periodStartDate) === -1) {
+  if (compareDates(banStartDate, periodStartDate) === -1 && isValidDate(banStartDate)) {
     Alert.alert(
       'Błąd',
       'Okres pobytu powinien zacząć się po rozpoczęciu zakazu.'

@@ -38,7 +38,7 @@ const NumberInput = ({ setBanPeriod }: { setBanPeriod: (e: number) => void }) =>
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
         accessibilityLabel="Okres zakazu w latach"
-        accessibilityHint="Wprowadź liczbę lat trwania okresu zakazu. Wartość musi być pomiędzy 0 a 99. Pole nie jest obowiązkowe."
+        accessibilityHint="Wprowadź liczbę lat trwania okresu zakazu. Wartość musi być pomiędzy 0 a 99."
         accessible={true}
         accessibilityValue={{
           min: 0,

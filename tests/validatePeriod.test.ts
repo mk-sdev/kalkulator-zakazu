@@ -33,5 +33,8 @@ describe('validateOkresPobytu', () => {
   it('should return 1 if the dates are valid and in correct order', () => {
     expect(validatePeriod('02/01/2002', '10/01/2002', '01/01/2000')).toBe(1)
     expect(validatePeriod('01/01/2000', '02/01/2000', '01/01/2000')).toBe(1)
+    // if banStartDate is an invalid date, then don't care about it
+    expect(validatePeriod('01/01/2000', '02/01/2000', '01/21/2000')).toBe(1)
+    expect(validatePeriod('01/01/2000', '02/01/2000', '01/')).toBe(1)
   })
 })

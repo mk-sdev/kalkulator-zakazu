@@ -40,10 +40,11 @@ describe('Output Component', () => {
     expect(screen.getByText('11/01/2024')).toBeTruthy() 
   })
 
+  //consider leap years
   it('should correctly add days and years to startDate', () => {
-    render(<Output banStartDate="01/01/2023" daysInPrison={365} banPeriod={2} />)
+    render(<Output banStartDate="01/01/2024" daysInPrison={365} banPeriod={2} />)
 
     expect(screen.getByText('Przewidywana data końca zakazu:')).toBeTruthy()
-    expect(screen.getByText('01/01/2026')).toBeTruthy() 
+    expect(screen.getByText('01/01/2027')).toBeTruthy() 
   })
 })

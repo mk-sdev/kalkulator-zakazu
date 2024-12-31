@@ -21,11 +21,12 @@ export default function Output({
       .map(Number)
     const startDate = new Date(banStartYear, banStartMonth - 1, banStartDay)
 
-    // Add daysInPrison
-    startDate.setDate(startDate.getDate() + daysInPrison)
-
+    //! add years first and then days to avoid issues with leap years
     // Add banPeriod (years)
     startDate.setFullYear(startDate.getFullYear() + banPeriod)
+    
+    // Add daysInPrison
+    startDate.setDate(startDate.getDate() + daysInPrison)
 
     // Formatting to DD/MM/YYYY
     const newDay = String(startDate.getDate()).padStart(2, '0')

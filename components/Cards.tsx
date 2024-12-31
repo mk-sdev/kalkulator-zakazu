@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, FlatList } from 'react-native'
 import React from 'react'
 import { backgroundColor, textColor } from '../utils/styles'
 import Feather from '@expo/vector-icons/Feather'
@@ -11,40 +11,40 @@ export default function Cards({
   periods: periodType[]
   deletePeriod: (i: number, d: number) => void
 }) {
-  return (
-    <View style={styles.periodsContainer}>
-      {periods.map((period, index) => {
-        return (
-          <View
-            key={period.start}
-            style={styles.periodCard}
-            accessible={true}
-            accessibilityLabel={`Okres pobytu od ${period.start} do ${period.end}. Liczba dni: ${period.duration}.`}
-          >
-            <View style={styles.periodContent}>
-              <Text
-                style={styles.periodRange}
-              >{`${period.start} - ${period.end}`}</Text>
-              <Text
-                style={styles.periodDuration}
-              >{`Liczba dni: ${period.duration}`}</Text>
-            </View>
-            <Feather
-              name="trash-2"
-              size={24}
-              color="red"
-              style={styles.trashIcon}
-              onPress={() => {
-                deletePeriod(index, period.duration)
-              }}
-              accessibilityLabel={`Usuń okres pobytu od ${period.start} do ${period.end}`}
-              accessibilityRole="button"
-              accessible={true}
-            />
-          </View>
-        )
-      })}
+  const card = ({ item, index }: { item: periodType; index: number }) => (
+    <View
+      style={styles.periodCard}
+      accessible={true}
+      accessibilityLabel={`Okres pobytu od ${item.start} do ${item.end}. Liczba dni: ${item.duration}.`}
+    >
+      <View style={styles.periodContent}>
+        <Text style={styles.periodRange}>{`${item.start} - ${item.end}`}</Text>
+        <Text
+          style={styles.periodDuration}
+        >{`Liczba dni: ${item.duration}`}</Text>
+      </View>
+      <Feather
+        name="trash-2"
+        size={24}
+        color="red"
+        style={styles.trashIcon}
+        onPress={() => {
+          deletePeriod(index, item.duration)
+        }}
+        accessibilityLabel={`Usuń okres pobytu od ${item.start} do ${item.end}`}
+        accessibilityRole="button"
+        accessible={true}
+      />
     </View>
+  )
+
+  return (
+    <FlatList
+      data={periods}
+      renderItem={card}
+      keyExtractor={item => item.start}
+      contentContainerStyle={styles.periodsContainer}
+    />
   )
 }
 

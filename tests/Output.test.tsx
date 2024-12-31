@@ -47,4 +47,11 @@ describe('Output Component', () => {
     expect(screen.getByText('Przewidywana data końca zakazu:')).toBeTruthy()
     expect(screen.getByText('01/01/2027')).toBeTruthy() 
   })
+
+  it('should correctly add days and years to startDate', () => {
+    render(<Output banStartDate="06/05/2017" daysInPrison={179+1881+24+342} banPeriod={10} />)
+
+    expect(screen.getByText('Przewidywana data końca zakazu:')).toBeTruthy()
+    expect(screen.getByText('26/12/2033')).toBeTruthy() 
+  })
 })

@@ -40,7 +40,7 @@ describe('Output Component', () => {
     expect(screen.getByText('11/01/2024')).toBeTruthy() 
   })
 
-  //consider leap years
+  //* consider leap years
   it('should correctly add days and years to startDate', () => {
     render(<Output banStartDate="01/01/2024" daysInPrison={365} banPeriod={2} />)
 
@@ -53,5 +53,19 @@ describe('Output Component', () => {
 
     expect(screen.getByText('Przewidywana data końca zakazu:')).toBeTruthy()
     expect(screen.getByText('26/12/2033')).toBeTruthy() 
+  })
+
+  it('should correctly add days and years to startDate', () => {
+    render(<Output banStartDate="28/02/2019" daysInPrison={365} banPeriod={1} />)
+
+    expect(screen.getByText('Przewidywana data końca zakazu:')).toBeTruthy()
+    expect(screen.getByText('27/02/2021')).toBeTruthy() 
+  })
+
+  it('should correctly add days and years to startDate', () => {
+    render(<Output banStartDate="28/02/2020" daysInPrison={10} banPeriod={1} />)
+
+    expect(screen.getByText('Przewidywana data końca zakazu:')).toBeTruthy()
+    expect(screen.getByText('10/03/2021')).toBeTruthy() 
   })
 })
